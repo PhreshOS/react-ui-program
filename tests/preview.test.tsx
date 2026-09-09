@@ -1,11 +1,35 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { afterEach, expect, it } from "vitest"
+import { afterAll, afterEach, beforeAll, expect, it } from "vitest"
 import { standardAppearance } from "@phreshos/core"
 import Preview from "../client/view/preview"
 import config from "../phresh.config"
 
+// JSDOM does not implement the native dialog's top-layer operations.
+const dialogDescriptors = Object.getOwnPropertyDescriptors(HTMLDialogElement.prototype)
+
+beforeAll(() => {
+
+    Object.defineProperties(HTMLDialogElement.prototype, {
+        showModal: { configurable: true, value(this: HTMLDialogElement) { this.open = true } },
+        close: { configurable: true, value(this: HTMLDialogElement) {
+
+            this.open = false
+            this.dispatchEvent(new Event("close"))
+        } }
+    })
+})
+
 afterEach(cleanup)
+
+afterAll(() => {
+
+    for (const name of ["showModal", "close"]) {
+
+        if (dialogDescriptors[name]) Object.defineProperty(HTMLDialogElement.prototype, name, dialogDescriptors[name])
+        else Reflect.deleteProperty(HTMLDialogElement.prototype, name)
+    }
+})
 
 it("declares a Client-only Program with no permissions", () => {
 
@@ -19,6 +43,8 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
     const user = userEvent.setup()
 
     const view = render(<Preview appearance={standardAppearance} theme="light" />)
+
+    await user.click(screen.getByRole("button", { name: "Appearance" }))
 
     fireEvent.change(screen.getByRole("slider", { name: "radius" }), { target: { value: "18" } })
 
@@ -42,6 +68,8 @@ it("switches theme without inferring colors from its name", async () => {
     const user = userEvent.setup()
 
     render(<Preview appearance={{ ...standardAppearance, background: { light: "#111111", dark: "#eeeeee" } }} theme="light" />)
+
+    await user.click(screen.getByRole("button", { name: "Appearance" }))
 
     expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe("#111111")
 
@@ -83,10 +111,54 @@ it("renders every component example", async () => {
 
     render(<Preview appearance={standardAppearance} theme="light" />)
 
-    for (const name of ["Surface", "Panel", "Flex", "Grid", "Tokens", "Button"]) {
+    for (const name of ["Input", "Textarea", "Checkbox", "Radio", "Switch", "Select", "Slider", "Surface", "Panel", "Flex", "Grid", "Tokens", "Button"]) {
 
-        await user.click(screen.getByRole("button", { name }))
+        const button = within(screen.getByRole("navigation", { name: "Components" })).getByRole("button", { name })
+
+        await user.click(button)
 
         expect(screen.getByRole("heading", { name, level: 2 })).toBeTruthy()
+        expect(button.getAttribute("aria-pressed")).toBe("true")
+        expect(screen.getByRole("region", { name: `${name} preview` })).toBeTruthy()
     }
+})
+
+it("keeps Appearance out of the browsing area until requested and retains edits after closing", async () => {
+
+    const user = userEvent.setup()
+
+    render(<Preview appearance={standardAppearance} theme="light" />)
+
+    expect(screen.queryByRole("dialog")).toBeNull()
+    expect(screen.queryByRole("slider", { name: "radius" })).toBeNull()
+
+    await user.click(screen.getByRole("button", { name: "Appearance" }))
+
+    const dialog = screen.getByRole("dialog", { name: "Appearance" })
+
+    fireEvent.change(within(dialog).getByRole("slider", { name: "radius" }), { target: { value: "18" } })
+    await user.click(within(dialog).getByRole("button", { name: "Close" }))
+
+    expect(screen.queryByRole("dialog")).toBeNull()
+
+    await user.click(screen.getByRole("button", { name: "Input" }))
+    await user.click(screen.getByRole("button", { name: "Appearance" }))
+
+    expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
+})
+
+it("exercises the input's controlled value and disabled state", async () => {
+
+    const user = userEvent.setup()
+
+    render(<Preview appearance={standardAppearance} theme="light" />)
+
+    await user.click(screen.getByRole("button", { name: "Input" }))
+    await user.type(screen.getByRole("textbox", { name: "Try Input" }), "Example")
+
+    expect(screen.getByRole("status", { name: "Input value" }).textContent).toBe('Value: "Example"')
+
+    await user.click(screen.getByRole("checkbox", { name: "Disabled" }))
+
+    expect((screen.getByRole("textbox", { name: "Try Input" }) as HTMLInputElement).disabled).toBe(true)
 })

@@ -1,19 +1,17 @@
 import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale } from "@phreshos/react-ui"
 import { useState } from "react"
+import Inputs, { inputComponents } from "./inputs"
 
-const components = ["Button", "Surface", "Panel", "Flex", "Grid", "Tokens"] as const
+export const components = ["Button", ...inputComponents, "Surface", "Panel", "Flex", "Grid", "Tokens"] as const
 
-export default function Examples() {
+export type Component = typeof components[number]
 
-    const [component, setComponent] = useState<typeof components[number]>("Button")
+export default function Examples({ component }: { readonly component: Component }) {
 
-    return <div className="examples">
-        <Flex gap="small" wrap aria-label="Components">
-            {components.map(name => <Button key={name} color={component === name ? "primary" : undefined}
-                aria-pressed={component === name} onPress={() => setComponent(name)}>{name}</Button>)}
-        </Flex>
+    return <div className="examples" role="region" aria-label={`${component} preview`} tabIndex={0}>
         <h2>{component}</h2>
         {component === "Button" && <Buttons />}
+        {inputComponents.map(name => component === name ? <Inputs key={name} component={name} /> : null)}
         {component === "Surface" && <Surfaces />}
         {component === "Panel" && <Panel header={<h3 className="sample-padding">Panel header</h3>}>
             <div className="sample-padding"><p>Content inside the inset Surface.</p><Button>Action</Button></div>
@@ -65,8 +63,12 @@ function Surfaces() {
     return <Grid gap={24}>
         <p className="muted">Default material over a colored backdrop. Controls affect the shared Appearance, not custom Surface paint.</p>
         <div className="material-stage" style={{ background: `radial-gradient(at 20% 80%, ${primary}, transparent 65%), radial-gradient(at 90% 10%, ${secondary}, transparent 60%)` }}>
-            <Surface className="sample-padding"><h3>Surface</h3><p>Border, material, radius, and shadow use React UI defaults.</p><Button>Action</Button></Surface>
+            <Surface className="sample-padding"><h3>Surface</h3><p>Default border, material, and radius. No automatic shadow.</p><Button>Action</Button></Surface>
         </div>
+        <Grid gap={16} className="sample-grid">
+            <Surface color="soft" radius="large" className="sample-padding"><h3>Derived values</h3><p>Soft background, large radius.</p></Surface>
+            <Surface color={primary} radius={18} className="sample-padding"><h3>Direct values</h3><p>Primary color, 18px radius.</p></Surface>
+        </Grid>
     </Grid>
 }
 

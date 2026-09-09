@@ -1,8 +1,13 @@
 # React UI Preview
 
 A Client-only PhreshOS Program for exploring the actual components exported by
-[@phreshos/react-ui](https://github.com/PhreshOS/react-ui): Button, Surface,
-Panel, Flex, and Grid, plus color and spacing scales.
+[@phreshos/react-ui](https://github.com/PhreshOS/react-ui): Button, Input,
+Textarea, Checkbox, Radio, Switch, Select, Slider, Surface, Panel, Flex, and
+Grid, plus color and spacing scales.
+
+Browse components in the sidebar. The remaining space belongs to the selected
+example, with responsive sample columns and independent scrolling. Open
+Appearance for the local theme controls; they do not occupy a permanent column.
 
 The preview follows Desktop appearance. Theme, palette, material, radius,
 spacing, and shadow controls are local to the preview. Reset restores the
@@ -22,7 +27,7 @@ Use `npm run verify` to type-check, test, and build. Use `npm run pack` to
 produce a Program archive. Bun can run the same scripts.
 
 This preview currently targets the latest Core and React UI source builds,
-including the independent shadow setting and flat Button palette. The local
+including the independent shadow setting and experimental Surface-based controls. The local
 dependencies are updated to those builds. A fresh install from npm requires
 releases containing those changes; older published builds do not satisfy the
 preview's current contracts.

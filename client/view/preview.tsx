@@ -1,9 +1,9 @@
-import { AppearanceProvider, Button, Flex, Grid, Surface, useAppearance, useResolveTheme } from "@phreshos/react-ui"
+import { AppearanceProvider, Button, Flex, Surface, useAppearance, useResolveTheme } from "@phreshos/react-ui"
 import type { Appearance, Theme } from "@phreshos/core"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import metadata from "../../package.json"
 import Controls from "./controls"
-import Examples from "./examples"
+import Examples, { components, type Component } from "./examples"
 
 export default function Preview({ appearance, theme }: { readonly appearance: Appearance, readonly theme: Theme }) {
 
@@ -11,29 +11,41 @@ export default function Preview({ appearance, theme }: { readonly appearance: Ap
 
     const [selectedTheme, setTheme] = useState<Theme | null>(null)
 
+    const [component, setComponent] = useState<Component>("Button")
+
+    const appearanceDialog = useRef<HTMLDialogElement>(null)
+
     const effectiveTheme = selectedTheme ?? theme
 
     useEffect(() => { document.title = metadata.displayName }, [])
 
     return <AppearanceProvider appearance={draft ?? appearance} theme={effectiveTheme}>
         <Workspace>
-            <Flex align="center" justify="between" gap="medium" wrap>
-                <div><h1>{metadata.displayName}</h1><p className="muted">{metadata.description}</p></div>
-                <Flex gap="small" wrap>
-                    <Button aria-pressed={selectedTheme === null} onPress={() => setTheme(null)}>Desktop</Button>
-                    <Button aria-pressed={selectedTheme === "light"} onPress={() => setTheme("light")}>Light</Button>
-                    <Button aria-pressed={selectedTheme === "dark"} onPress={() => setTheme("dark")}>Dark</Button>
-                    <Button onPress={() => { setDraft(null); setTheme(null) }}>Reset</Button>
-                </Flex>
-            </Flex>
-            <Grid className="preview-layout" gap={16}>
-                <Surface className="controls">
-                    <h2>Appearance</h2>
+            <Surface className="component-sidebar">
+                <h1>{metadata.displayName}</h1>
+                <div className="component-navigation" role="navigation" aria-label="Components">
+                    {components.map(name => <Button key={name} size="small" style={{ justifyContent: "flex-start" }} color={component === name ? "primary" : undefined}
+                        aria-pressed={component === name} onPress={() => setComponent(name)}>{name}</Button>)}
+                </div>
+                <Button size="small" aria-haspopup="dialog" onPress={() => appearanceDialog.current?.showModal()}>Appearance</Button>
+            </Surface>
+            <Examples key={component} component={component} />
+            <dialog ref={appearanceDialog} className="appearance-dialog" aria-labelledby="appearance-title">
+                <Surface className="appearance-panel">
+                    <Flex align="center" justify="between" gap="small">
+                        <h2 id="appearance-title">Appearance</h2>
+                        <Button size="small" onPress={() => appearanceDialog.current?.close()}>Close</Button>
+                    </Flex>
+                    <Flex gap="small" wrap>
+                        <Button size="small" aria-pressed={selectedTheme === null} onPress={() => setTheme(null)}>Desktop</Button>
+                        <Button size="small" aria-pressed={selectedTheme === "light"} onPress={() => setTheme("light")}>Light</Button>
+                        <Button size="small" aria-pressed={selectedTheme === "dark"} onPress={() => setTheme("dark")}>Dark</Button>
+                        <Button size="small" onPress={() => { setDraft(null); setTheme(null) }}>Reset</Button>
+                    </Flex>
                     <p className="muted">Local preview only. Reset follows the Desktop again.</p>
                     <Controls appearance={draft ?? appearance} theme={effectiveTheme} onChange={setDraft} />
                 </Surface>
-                <Examples />
-            </Grid>
+            </dialog>
         </Workspace>
     </AppearanceProvider>
 }
