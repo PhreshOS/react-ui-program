@@ -1,0 +1,8 @@
+node_modules
+dist
+storage
+*.log
+.DS_Store
+/*.zip
+/*.zip.sha256
+/program.json
