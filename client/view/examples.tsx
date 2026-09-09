@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale } from "@phreshos/react-ui"
+import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useSurface } from "@phreshos/react-ui"
 import { useState } from "react"
 import Inputs, { inputComponents } from "./inputs"
 
@@ -66,10 +66,22 @@ function Surfaces() {
             <Surface className="sample-padding"><h3>Surface</h3><p>Default border, material, and radius. No automatic shadow.</p><Button>Action</Button></Surface>
         </div>
         <Grid gap={16} className="sample-grid">
+            <CustomSurface />
             <Surface color="soft" radius="large" className="sample-padding"><h3>Derived values</h3><p>Soft background, large radius.</p></Surface>
             <Surface color={primary} radius={18} className="sample-padding"><h3>Direct values</h3><p>Primary color, 18px radius.</p></Surface>
         </Grid>
     </Grid>
+}
+
+function CustomSurface() {
+    const surface = useSurface<HTMLDivElement>({ color: "soft", radius: "small" })
+
+    return <div ref={surface.ref} style={surface.style} className="sample-padding">
+        {surface.material}
+        <h3>Custom host</h3>
+        <p>A native div driven directly by useSurface.</p>
+        <Button color="primary" surface={{ opacity: 0.6, backdrop: 0 }}>Material override</Button>
+    </div>
 }
 
 function Tiles() {
