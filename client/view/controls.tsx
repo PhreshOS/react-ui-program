@@ -17,13 +17,13 @@ export default function Controls({ appearance, theme, onChange }: {
         </label>)}
         {(["spacing", "radius"] as const).map(name => <Range key={name} name={name} value={appearance[name].light} limits={appearanceLimits[name]}
             onChange={value => onChange({ ...appearance, [name]: { light: value } })} />)}
-        <h3>Surface</h3>
-        {Object.entries(appearanceLimits.surface).map(([name, limits]) => {
+        <h3>Material</h3>
+        {Object.entries(appearanceLimits.material).map(([name, limits]) => {
 
-            const key = name as keyof typeof appearanceLimits.surface
+            const key = name as keyof typeof appearanceLimits.material
 
-            return <Range key={key} name={key} value={appearance.surface[theme][key]} limits={limits}
-                onChange={value => onChange({ ...appearance, surface: { ...appearance.surface, [theme]: { ...appearance.surface[theme], [key]: value } } })} />
+            return <Range key={key} name={key} value={appearance.material[theme][key]} limits={limits}
+                onChange={value => onChange({ ...appearance, material: { ...appearance.material, [theme]: { ...appearance.material[theme], [key]: value } } })} />
         })}
         <h3>Shadow</h3>
         {Object.entries(appearanceLimits.shadow).map(([name, limits]) => {

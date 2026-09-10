@@ -1,8 +1,8 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useSurface, useTheme } from "@phreshos/react-ui"
+import { Button, Flex, Grid, Material, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useTheme } from "@phreshos/react-ui"
 import { motion } from "motion/react"
 import { useRef, useState } from "react"
-import darkWallpaper from "../../../system/assets/bundled/dark-wallpaper.png"
-import lightWallpaper from "../../../system/assets/bundled/light-wallpaper.png"
+import darkWallpaper from "../assets/dark-wallpaper.png"
+import lightWallpaper from "../assets/light-wallpaper.png"
 import Inputs, { inputComponents } from "./inputs"
 
 export const components = ["Button", ...inputComponents, "Surface", "Panel", "Flex", "Grid", "Tokens"] as const
@@ -81,9 +81,6 @@ function Surfaces() {
 }
 
 function DraggableSurface() {
-
-    const surface = useSurface<HTMLDivElement>()
-
     const wallpaper = useTheme() === "dark" ? darkWallpaper : lightWallpaper
 
     const bounds = useRef<HTMLDivElement>(null)
@@ -91,27 +88,24 @@ function DraggableSurface() {
     return <div ref={bounds} className="surface-background-stage" style={{ backgroundImage: `url(${wallpaper})` }}>
         <motion.div
             role="group"
-            aria-label="Draggable Surface"
+            aria-label="Draggable Material"
             drag
             dragConstraints={bounds}
             dragMomentum={false}
-            style={{ width: "100px", height: "100px" }}
+            style={{ position: "relative", isolation: "isolate", width: 100, height: 100, borderRadius: 10 }}
         >
-            {surface.material}
+            <Material />
             Drag this material
         </motion.div>
     </div>
 }
 
 function CustomSurface() {
-    const surface = useSurface<HTMLDivElement>({ color: "soft", radius: "small" })
-
-    return <div ref={surface.ref} style={surface.style} className="sample-padding">
-        {surface.material}
+    return <Surface as="section" color="soft" radius="small" className="sample-padding">
         <h3>Custom host</h3>
-        <p>A native div driven directly by useSurface.</p>
+        <p>A native section selected by Surface.</p>
         <Button color="primary" surface={{ opacity: 0.6, backdrop: 0 }}>Material override</Button>
-    </div>
+    </Surface>
 }
 
 function Tiles() {

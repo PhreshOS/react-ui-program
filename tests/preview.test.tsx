@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { afterAll, afterEach, beforeAll, expect, it } from "vitest"
-import { standardAppearance } from "@phreshos/core"
+import { defaultAppearance } from "@phreshos/core"
 import Preview from "../client/view/preview"
 import config from "../phresh.config"
 
@@ -42,7 +42,7 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     const user = userEvent.setup()
 
-    const view = render(<Preview appearance={standardAppearance} theme="light" />)
+    const view = render(<Preview appearance={defaultAppearance} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 
@@ -50,9 +50,9 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
 
-    expect(standardAppearance.radius.light).toBe(10)
+    expect(defaultAppearance.radius.light).toBe(10)
 
-    view.rerender(<Preview appearance={{ ...standardAppearance, radius: { light: 8 } }} theme="dark" />)
+    view.rerender(<Preview appearance={{ ...defaultAppearance, radius: { light: 8 } }} theme="dark" />)
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
 
@@ -60,14 +60,14 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("8")
 
-    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(standardAppearance.background.dark)
+    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(defaultAppearance.background.dark)
 })
 
 it("switches theme without inferring colors from its name", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={{ ...standardAppearance, background: { light: "#111111", dark: "#eeeeee" } }} theme="light" />)
+    render(<Preview appearance={{ ...defaultAppearance, background: { light: "#111111", dark: "#eeeeee" } }} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 
@@ -82,7 +82,7 @@ it("exercises Button activation, disabled and pending states", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={standardAppearance} theme="light" />)
+    render(<Preview appearance={defaultAppearance} theme="light" />)
 
     const button = screen.getByRole("button", { name: "Test button" })
 
@@ -109,7 +109,7 @@ it("renders every component example", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={standardAppearance} theme="light" />)
+    render(<Preview appearance={defaultAppearance} theme="light" />)
 
     for (const name of ["Input", "Textarea", "Checkbox", "Radio", "Switch", "Select", "Slider", "Surface", "Panel", "Flex", "Grid", "Tokens", "Button"]) {
 
@@ -123,21 +123,23 @@ it("renders every component example", async () => {
     }
 })
 
-it("renders only a draggable material over the transparent System wallpaper stage", async () => {
+it("renders a draggable Material over a repository-owned wallpaper stage", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={standardAppearance} theme="light" />)
+    render(<Preview appearance={defaultAppearance} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Surface" }))
 
-    const surface = screen.getByRole("group", { name: "Draggable Surface" })
+    const surface = screen.getByRole("group", { name: "Draggable Material" })
 
     expect(surface.className).toBe("")
     expect(surface.style.background).toBe("")
-    expect(surface.style.borderRadius).toBe("")
+    expect(surface.style.position).toBe("relative")
+    expect(surface.style.isolation).toBe("isolate")
+    expect(surface.style.borderRadius).toBe("10px")
     expect(surface.style.color).toBe("")
-    expect(surface.querySelector("[data-surface-material]")).toBeTruthy()
+    expect(surface.querySelector("[data-material]")).toBeTruthy()
     expect(surface.parentElement?.style.backgroundImage).not.toBe("")
     expect(surface.closest(".workspace")?.getAttribute("style")).not.toContain("background")
 })
@@ -146,7 +148,7 @@ it("keeps Appearance out of the browsing area until requested and retains edits 
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={standardAppearance} theme="light" />)
+    render(<Preview appearance={defaultAppearance} theme="light" />)
 
     expect(screen.queryByRole("dialog")).toBeNull()
     expect(screen.queryByRole("slider", { name: "radius" })).toBeNull()
@@ -170,7 +172,7 @@ it("exercises the input's controlled value and disabled state", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={standardAppearance} theme="light" />)
+    render(<Preview appearance={defaultAppearance} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Input" }))
     await user.type(screen.getByRole("textbox", { name: "Try Input" }), "Example")
