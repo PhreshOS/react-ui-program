@@ -1,5 +1,8 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useSurface } from "@phreshos/react-ui"
-import { useState } from "react"
+import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useSurface, useTheme } from "@phreshos/react-ui"
+import { motion } from "motion/react"
+import { useRef, useState } from "react"
+import darkWallpaper from "../../../system/assets/bundled/dark-wallpaper.png"
+import lightWallpaper from "../../../system/assets/bundled/light-wallpaper.png"
 import Inputs, { inputComponents } from "./inputs"
 
 export const components = ["Button", ...inputComponents, "Surface", "Panel", "Flex", "Grid", "Tokens"] as const
@@ -65,12 +68,39 @@ function Surfaces() {
         <div className="material-stage" style={{ background: `radial-gradient(at 20% 80%, ${primary}, transparent 65%), radial-gradient(at 90% 10%, ${secondary}, transparent 60%)` }}>
             <Surface className="sample-padding"><h3>Surface</h3><p>Default border, material, and radius. No automatic shadow.</p><Button>Action</Button></Surface>
         </div>
+        <section className="surface-background-example" aria-labelledby="surface-background-title">
+            <h3 id="surface-background-title">System wallpaper</h3>
+            <DraggableSurface />
+        </section>
         <Grid gap={16} className="sample-grid">
             <CustomSurface />
             <Surface color="soft" radius="large" className="sample-padding"><h3>Derived values</h3><p>Soft background, large radius.</p></Surface>
             <Surface color={primary} radius={18} className="sample-padding"><h3>Direct values</h3><p>Primary color, 18px radius.</p></Surface>
         </Grid>
     </Grid>
+}
+
+function DraggableSurface() {
+
+    const surface = useSurface<HTMLDivElement>()
+
+    const wallpaper = useTheme() === "dark" ? darkWallpaper : lightWallpaper
+
+    const bounds = useRef<HTMLDivElement>(null)
+
+    return <div ref={bounds} className="surface-background-stage" style={{ backgroundImage: `url(${wallpaper})` }}>
+        <motion.div
+            role="group"
+            aria-label="Draggable Surface"
+            drag
+            dragConstraints={bounds}
+            dragMomentum={false}
+            style={{ width: "100px", height: "100px" }}
+        >
+            {surface.material}
+            Drag this material
+        </motion.div>
+    </div>
 }
 
 function CustomSurface() {

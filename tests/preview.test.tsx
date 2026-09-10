@@ -123,6 +123,25 @@ it("renders every component example", async () => {
     }
 })
 
+it("renders only a draggable material over the transparent System wallpaper stage", async () => {
+
+    const user = userEvent.setup()
+
+    render(<Preview appearance={standardAppearance} theme="light" />)
+
+    await user.click(screen.getByRole("button", { name: "Surface" }))
+
+    const surface = screen.getByRole("group", { name: "Draggable Surface" })
+
+    expect(surface.className).toBe("")
+    expect(surface.style.background).toBe("")
+    expect(surface.style.borderRadius).toBe("")
+    expect(surface.style.color).toBe("")
+    expect(surface.querySelector("[data-surface-material]")).toBeTruthy()
+    expect(surface.parentElement?.style.backgroundImage).not.toBe("")
+    expect(surface.closest(".workspace")?.getAttribute("style")).not.toContain("background")
+})
+
 it("keeps Appearance out of the browsing area until requested and retains edits after closing", async () => {
 
     const user = userEvent.setup()

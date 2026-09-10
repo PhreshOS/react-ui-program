@@ -28,6 +28,8 @@ h3 { font-size: 14px; }
 .sample-padding p { margin: 12px 0; }
 .muted { opacity: 0.65; }
 .material-stage { padding: 32px; }
+.surface-background-example { display: grid; gap: 12px; }
+.surface-background-stage { position: relative; height: 280px; overflow: hidden; background-position: center; background-size: cover; }
 .swatch { height: 64px; }
 
 @media (max-width: 600px) {

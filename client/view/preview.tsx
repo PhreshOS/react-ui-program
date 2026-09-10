@@ -54,9 +54,7 @@ function Workspace({ children }: { readonly children: React.ReactNode }) {
 
     const appearance = useAppearance()
 
-    const background = useResolveTheme(appearance.background)
-
     const foreground = useResolveTheme(appearance.foreground)
 
-    return <div className="workspace" style={{ color: foreground, background }}>{children}</div>
+    return <div className="workspace" style={{ color: foreground }}>{children}</div>
 }
