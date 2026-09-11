@@ -24,7 +24,7 @@ export default function Preview({ appearance, theme }: { readonly appearance: Ap
             <Surface className="component-sidebar">
                 <h1>{metadata.displayName}</h1>
                 <div className="component-navigation" role="navigation" aria-label="Components">
-                    {components.map(name => <Button key={name} size="small" style={{ justifyContent: "flex-start" }} color={component === name ? "primary" : undefined}
+                    {components.map(name => <Button key={name} size="small" style={{ justifyContent: "flex-start" }} color={component === name ? "primary:base" : undefined}
                         aria-pressed={component === name} onPress={() => setComponent(name)}>{name}</Button>)}
                 </div>
                 <Button size="small" aria-haspopup="dialog" onPress={() => appearanceDialog.current?.showModal()}>Appearance</Button>
@@ -54,7 +54,7 @@ function Workspace({ children }: { readonly children: React.ReactNode }) {
 
     const appearance = useAppearance()
 
-    const foreground = useResolveTheme(appearance.foreground)
+    const foreground = useResolveTheme(appearance.colors.foreground)
 
     return <div className="workspace" style={{ color: foreground }}>{children}</div>
 }

@@ -60,14 +60,17 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("8")
 
-    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(defaultAppearance.background.dark)
+    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(defaultAppearance.colors.background.dark)
 })
 
 it("switches theme without inferring colors from its name", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={{ ...defaultAppearance, background: { light: "#111111", dark: "#eeeeee" } }} theme="light" />)
+    render(<Preview appearance={{
+        ...defaultAppearance,
+        colors: { ...defaultAppearance.colors, background: { light: "#111111", dark: "#eeeeee" } }
+    }} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 

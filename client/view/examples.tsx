@@ -38,7 +38,7 @@ function Buttons() {
         <Flex gap="medium" wrap>
             <Button onPress={() => setPresses(value => value + 1)}>Neutral</Button>
             {(["primary", "secondary", "success", "warning", "danger", "info"] as const).map(color =>
-                <Button key={color} color={color} onPress={() => setPresses(value => value + 1)}>{color}</Button>)}
+                <Button key={color} color={`${color}:base`} onPress={() => setPresses(value => value + 1)}>{color}</Button>)}
         </Flex>
         <h3>Sizes</h3>
         <Flex gap="medium" wrap align="center">
@@ -49,7 +49,7 @@ function Buttons() {
         <Flex gap="medium" wrap align="center">
             <label><input type="checkbox" checked={disabled} onChange={event => setDisabled(event.target.checked)} /> Disabled</label>
             <label><input type="checkbox" checked={pending} onChange={event => setPending(event.target.checked)} /> Pending</label>
-            <Button color="primary" disabled={disabled} pending={pending} onPress={() => setPresses(value => value + 1)}>Test button</Button>
+            <Button color="primary:base" disabled={disabled} pending={pending} onPress={() => setPresses(value => value + 1)}>Test button</Button>
         </Flex>
         <p role="status" aria-label="Button presses">Presses: {presses}</p>
     </Grid>
@@ -59,9 +59,9 @@ function Surfaces() {
 
     const appearance = useAppearance()
 
-    const primary = useResolveTheme(appearance.primary)
+    const primary = useResolveTheme(appearance.colors.primary)
 
-    const secondary = useResolveTheme(appearance.secondary)
+    const secondary = useResolveTheme(appearance.colors.secondary)
 
     return <Grid gap={24}>
         <p className="muted">Default material over a colored backdrop. Controls affect the shared Appearance, not custom Surface paint.</p>
@@ -74,7 +74,7 @@ function Surfaces() {
         </section>
         <Grid gap={16} className="sample-grid">
             <CustomSurface />
-            <Surface color="soft" radius="large" className="sample-padding"><h3>Derived values</h3><p>Soft background, large radius.</p></Surface>
+            <Surface color="background:soft" radius="large" className="sample-padding"><h3>Derived values</h3><p>Soft background, large radius.</p></Surface>
             <Surface color={primary} radius={18} className="sample-padding"><h3>Direct values</h3><p>Primary color, 18px radius.</p></Surface>
         </Grid>
     </Grid>
@@ -101,10 +101,10 @@ function DraggableSurface() {
 }
 
 function CustomSurface() {
-    return <Surface as="section" color="soft" radius="small" className="sample-padding">
-        <h3>Custom host</h3>
-        <p>A native section selected by Surface.</p>
-        <Button color="primary" surface={{ opacity: 0.6, backdrop: 0 }}>Material override</Button>
+    return <Surface color="background:soft" radius="small" className="sample-padding">
+        <h3>Custom material</h3>
+        <p>A Surface is always a div hosting the same Material contract.</p>
+        <Button color="primary:base" material={{ opacity: 0.6, backdrop: 0 }}>Material override</Button>
     </Surface>
 }
 
@@ -117,7 +117,7 @@ function Tokens() {
 
     const appearance = useAppearance()
 
-    const primary = useResolveTheme(appearance.primary)
+    const primary = useResolveTheme(appearance.colors.primary)
 
     const colors = useColor(primary)
 
