@@ -126,7 +126,7 @@ it("renders every component example", async () => {
     }
 })
 
-it("renders a draggable Material over a repository-owned wallpaper stage", async () => {
+it("renders a draggable Surface over a repository-owned wallpaper stage", async () => {
 
     const user = userEvent.setup()
 
@@ -134,14 +134,16 @@ it("renders a draggable Material over a repository-owned wallpaper stage", async
 
     await user.click(screen.getByRole("button", { name: "Surface" }))
 
-    const surface = screen.getByRole("group", { name: "Draggable Material" })
+    const surface = screen.getByRole("group", { name: "Draggable Surface" })
+    const resolvedForeground = document.createElement("div")
+    resolvedForeground.style.color = defaultAppearance.colors.foreground.light
 
     expect(surface.className).toBe("")
-    expect(surface.style.background).toBe("")
+    expect(surface.style.background).toBe("transparent")
     expect(surface.style.position).toBe("relative")
     expect(surface.style.isolation).toBe("isolate")
     expect(surface.style.borderRadius).toBe("10px")
-    expect(surface.style.color).toBe("")
+    expect(surface.style.color).toBe(resolvedForeground.style.color)
     expect(surface.querySelector("[data-material]")).toBeTruthy()
     expect(surface.parentElement?.style.backgroundImage).not.toBe("")
     expect(surface.closest(".workspace")?.getAttribute("style")).not.toContain("background")

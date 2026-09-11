@@ -2,7 +2,7 @@
 
 A Client-only PhreshOS Program for exploring the actual components exported by
 [@phreshos/react-ui](https://github.com/PhreshOS/react-ui): Button, Input,
-Textarea, Checkbox, Radio, Switch, Select, Slider, Material, Surface, Panel, Flex, and
+Textarea, Checkbox, Radio, Switch, Select, Slider, Surface, Panel, Flex, and
 Grid, plus color and spacing scales.
 
 Browse components in the sidebar. The remaining space belongs to the selected

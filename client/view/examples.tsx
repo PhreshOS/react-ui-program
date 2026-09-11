@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Material, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useTheme } from "@phreshos/react-ui"
+import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useTheme } from "@phreshos/react-ui"
 import { motion } from "motion/react"
 import { useRef, useState } from "react"
 import darkWallpaper from "../assets/dark-wallpaper.png"
@@ -86,24 +86,24 @@ function DraggableSurface() {
     const bounds = useRef<HTMLDivElement>(null)
 
     return <div ref={bounds} className="surface-background-stage" style={{ backgroundImage: `url(${wallpaper})` }}>
-        <motion.div
+        <Surface
+            as={motion.div}
             role="group"
-            aria-label="Draggable Material"
+            aria-label="Draggable Surface"
             drag
             dragConstraints={bounds}
             dragMomentum={false}
-            style={{ position: "relative", isolation: "isolate", width: 100, height: 100, borderRadius: 10 }}
+            style={{ width: 100, height: 100 }}
         >
-            <Material />
-            Drag this material
-        </motion.div>
+            Drag this Surface
+        </Surface>
     </div>
 }
 
 function CustomSurface() {
     return <Surface color="background:soft" radius="small" className="sample-padding">
         <h3>Custom material</h3>
-        <p>A Surface is always a div hosting the same Material contract.</p>
+        <p>A Surface owns one material and uses a div as its default host.</p>
         <Button color="primary:base" material={{ opacity: 0.6, backdrop: 0 }}>Material override</Button>
     </Surface>
 }
