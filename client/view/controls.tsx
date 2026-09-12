@@ -12,17 +12,17 @@ export default function Controls({ appearance, theme, onChange }: {
     return <div className="control-list">
         {palette.map(name => <label key={name} className="field">
             <span>{name}</span>
-            <ColorInput key={`${theme}:${appearance.colors[name][theme]}`} name={name} value={appearance.colors[name][theme]}
+            <ColorInput key={`${theme}:${appearance.colors[theme][name]}`} name={name} value={appearance.colors[theme][name]}
                 onChange={value => onChange({
                     ...appearance,
                     colors: {
                         ...appearance.colors,
-                        [name]: { ...appearance.colors[name], [theme]: value }
+                        [theme]: { ...appearance.colors[theme], [name]: value }
                     }
                 })} />
         </label>)}
-        {(["spacing", "radius"] as const).map(name => <Range key={name} name={name} value={appearance[name].light} limits={appearanceLimits[name]}
-            onChange={value => onChange({ ...appearance, [name]: { light: value } })} />)}
+        {(["spacing", "radius"] as const).map(name => <Range key={name} name={name} value={appearance[name]} limits={appearanceLimits[name]}
+            onChange={value => onChange({ ...appearance, [name]: value })} />)}
         <h3>Material</h3>
         {Object.entries(appearanceLimits.material).map(([name, limits]) => {
 

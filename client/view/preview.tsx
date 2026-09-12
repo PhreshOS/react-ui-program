@@ -1,4 +1,4 @@
-import { AppearanceProvider, Button, Flex, Surface, useAppearance, useResolveTheme } from "@phreshos/react-ui"
+import { AppearanceProvider, Button, Flex, Surface, useAppearance, useThemedValue } from "@phreshos/react-ui"
 import type { Appearance, Theme } from "@phreshos/core"
 import { useEffect, useRef, useState } from "react"
 import metadata from "../../package.json"
@@ -54,7 +54,7 @@ function Workspace({ children }: { readonly children: React.ReactNode }) {
 
     const appearance = useAppearance()
 
-    const foreground = useResolveTheme(appearance.colors.foreground)
+    const foreground = useThemedValue(appearance.colors).foreground
 
     return <div className="workspace" style={{ color: foreground }}>{children}</div>
 }

@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useResolveTheme, useScale, useTheme } from "@phreshos/react-ui"
+import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useScale, useTheme, useThemedValue } from "@phreshos/react-ui"
 import { motion } from "motion/react"
 import { useRef, useState } from "react"
 import darkWallpaper from "../assets/dark-wallpaper.png"
@@ -59,9 +59,7 @@ function Surfaces() {
 
     const appearance = useAppearance()
 
-    const primary = useResolveTheme(appearance.colors.primary)
-
-    const secondary = useResolveTheme(appearance.colors.secondary)
+    const { primary, secondary } = useThemedValue(appearance.colors)
 
     return <Grid gap={24}>
         <p className="muted">Default material over a colored backdrop. Controls affect the shared Appearance, not custom Surface paint.</p>
@@ -117,11 +115,11 @@ function Tokens() {
 
     const appearance = useAppearance()
 
-    const primary = useResolveTheme(appearance.colors.primary)
+    const primary = useThemedValue(appearance.colors).primary
 
     const colors = useColor(primary)
 
-    const spacing = useScale(useResolveTheme(appearance.spacing))
+    const spacing = useScale(appearance.spacing)
 
     return <Grid gap={24}>
         <h3>Primary color scale</h3>

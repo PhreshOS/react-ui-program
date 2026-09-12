@@ -50,9 +50,9 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
 
-    expect(defaultAppearance.radius.light).toBe(10)
+    expect(defaultAppearance.radius).toBe(10)
 
-    view.rerender(<Preview appearance={{ ...defaultAppearance, radius: { light: 8 } }} theme="dark" />)
+    view.rerender(<Preview appearance={{ ...defaultAppearance, radius: 8 }} theme="dark" />)
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
 
@@ -60,7 +60,7 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("8")
 
-    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(defaultAppearance.colors.background.dark)
+    expect((screen.getByRole("textbox", { name: "background" }) as HTMLInputElement).value).toBe(defaultAppearance.colors.dark.background)
 })
 
 it("switches theme without inferring colors from its name", async () => {
@@ -69,7 +69,10 @@ it("switches theme without inferring colors from its name", async () => {
 
     render(<Preview appearance={{
         ...defaultAppearance,
-        colors: { ...defaultAppearance.colors, background: { light: "#111111", dark: "#eeeeee" } }
+        colors: {
+            light: { ...defaultAppearance.colors.light, background: "#111111" },
+            dark: { ...defaultAppearance.colors.dark, background: "#eeeeee" }
+        }
     }} theme="light" />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
@@ -136,7 +139,7 @@ it("renders a draggable Surface over a repository-owned wallpaper stage", async 
 
     const surface = screen.getByRole("group", { name: "Draggable Surface" })
     const resolvedForeground = document.createElement("div")
-    resolvedForeground.style.color = defaultAppearance.colors.foreground.light
+    resolvedForeground.style.color = defaultAppearance.colors.light.foreground
 
     expect(surface.className).toBe("")
     expect(surface.style.background).toBe("transparent")
