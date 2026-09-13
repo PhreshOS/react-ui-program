@@ -17,8 +17,8 @@
     "verify": "node --run check && node --run build && node --run test"
   },
   "dependencies": {
-    "@phreshos/client": "^0.1.39",
-    "@phreshos/core": "^0.1.44",
+    "@phreshos/client": "^0.1.40",
+    "@phreshos/core": "^0.1.45",
     "@phreshos/react": "^0.1.22",
     "@phreshos/react-ui": "^0.1.19",
     "motion": "^13.2.0",
