@@ -36,3 +36,11 @@ See the [PhreshOS documentation](https://docs.phreshos.com) for installation
 and Program development, and the [React UI repository](https://github.com/PhreshOS/react-ui)
 for the component contracts. The preview consumes those contracts; it does not
 reimplement the components.
+
+## Verification
+
+`check` performs static checks, `build` creates distributable output, and `test`
+runs Vitest assertions from `tests/`. Run `build` before testing built artifacts.
+`verify` runs `check`, `build`, and `test` in order. Operational tooling belongs
+in `scripts/`; tests and their fixtures belong in `tests/`. Verification uses
+the committed dependency graph without local package substitutions.
