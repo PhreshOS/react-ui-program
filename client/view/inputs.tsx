@@ -34,7 +34,7 @@ export default function Inputs({ component }: { readonly component: InputCompone
         </Grid>
         <h3>Colors</h3>
         <Grid className="sample-grid" gap="medium">
-            {(["primary", "secondary", "success", "warning", "danger", "info"] as const).map(color =>
+            {(["default", "primary", "secondary", "success", "warning", "danger", "info"] as const).map(color =>
                 <Example key={color} component={component} label={`${color} ${component}`} color={`${color}:base`} />)}
         </Grid>
     </Grid>

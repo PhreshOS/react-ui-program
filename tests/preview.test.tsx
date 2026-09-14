@@ -46,6 +46,8 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 
+    expect((screen.getByRole("textbox", { name: "default" }) as HTMLInputElement).value).toBe(defaultAppearance.colors.light.default)
+
     fireEvent.change(screen.getByRole("slider", { name: "radius" }), { target: { value: "18" } })
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")

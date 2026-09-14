@@ -36,7 +36,7 @@ function Buttons() {
     return <Grid gap={24}>
         <h3>Colors</h3>
         <Flex gap="medium" wrap>
-            <Button onPress={() => setPresses(value => value + 1)}>Neutral</Button>
+            <Button onPress={() => setPresses(value => value + 1)}>Default</Button>
             {(["primary", "secondary", "success", "warning", "danger", "info"] as const).map(color =>
                 <Button key={color} color={`${color}:base`} onPress={() => setPresses(value => value + 1)}>{color}</Button>)}
         </Flex>

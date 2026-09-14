@@ -1,7 +1,7 @@
 import { appearanceLimits, type Appearance, type Theme } from "@phreshos/core"
 import { useState } from "react"
 
-export const palette = ["background", "foreground", "primary", "secondary", "success", "warning", "danger", "info"] as const
+export const palette = ["background", "foreground", "default", "primary", "secondary", "success", "warning", "danger", "info"] as const
 
 export default function Controls({ appearance, theme, onChange }: {
     readonly appearance: Appearance
