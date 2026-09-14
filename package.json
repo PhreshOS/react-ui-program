@@ -2,7 +2,7 @@
   "name": "react-ui-program",
   "displayName": "React UI Preview",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An interactive preview of PhreshOS React UI components.",
   "type": "module",
   "license": "MIT",
@@ -17,10 +17,10 @@
     "verify": "node --run check && node --run build && node --run test"
   },
   "dependencies": {
-    "@phreshos/client": "^0.1.40",
-    "@phreshos/core": "^0.1.45",
-    "@phreshos/react": "^0.1.22",
-    "@phreshos/react-ui": "^0.1.19",
+    "@phreshos/client": "^0.1.41",
+    "@phreshos/core": "^0.1.47",
+    "@phreshos/react": "^0.1.23",
+    "@phreshos/react-ui": "^0.1.20",
     "motion": "^13.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
