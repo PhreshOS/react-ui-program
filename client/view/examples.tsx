@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, useScale, useTheme, useThemedValue } from "@phreshos/react-ui"
+import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, usePreferences, useScale, useThemedValue } from "@phreshos/react-ui"
 import { motion } from "motion/react"
 import { useRef, useState } from "react"
 import darkWallpaper from "../assets/dark-wallpaper.png"
@@ -79,7 +79,7 @@ function Surfaces() {
 }
 
 function DraggableSurface() {
-    const wallpaper = useTheme() === "dark" ? darkWallpaper : lightWallpaper
+    const wallpaper = usePreferences().theme === "dark" ? darkWallpaper : lightWallpaper
 
     const bounds = useRef<HTMLDivElement>(null)
 

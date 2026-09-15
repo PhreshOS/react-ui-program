@@ -18,5 +18,5 @@ function ConnectedPreview() {
 
     const preferences = useDesktopPreferences()
 
-    return <Preview appearance={appearance} theme={preferences.theme} />
+    return <Preview appearance={appearance} preferences={preferences} />
 }

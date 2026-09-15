@@ -1,11 +1,11 @@
 import { AppearanceProvider, Button, Flex, Surface, useAppearance, useThemedValue } from "@phreshos/react-ui"
-import type { Appearance, Theme } from "@phreshos/core"
+import type { Appearance, DesktopPreferences as Preferences, Theme } from "@phreshos/core"
 import { useEffect, useRef, useState } from "react"
 import metadata from "../../package.json"
 import Controls from "./controls"
 import Examples, { components, type Component } from "./examples"
 
-export default function Preview({ appearance, theme }: { readonly appearance: Appearance, readonly theme: Theme }) {
+export default function Preview({ appearance, preferences }: { readonly appearance: Appearance, readonly preferences: Preferences }) {
 
     const [draft, setDraft] = useState<Appearance | null>(null)
 
@@ -15,11 +15,12 @@ export default function Preview({ appearance, theme }: { readonly appearance: Ap
 
     const appearanceDialog = useRef<HTMLDialogElement>(null)
 
-    const effectiveTheme = selectedTheme ?? theme
+    const effectivePreferences = selectedTheme === null ? preferences : { ...preferences, theme: selectedTheme }
+    const effectiveTheme = effectivePreferences.theme
 
     useEffect(() => { document.title = metadata.displayName }, [])
 
-    return <AppearanceProvider appearance={draft ?? appearance} theme={effectiveTheme}>
+    return <AppearanceProvider appearance={draft ?? appearance} preferences={effectivePreferences}>
         <Workspace>
             <Surface className="component-sidebar">
                 <h1>{metadata.displayName}</h1>
