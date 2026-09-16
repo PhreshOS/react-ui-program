@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { afterAll, afterEach, beforeAll, expect, it } from "vitest"
 import { defaultAppearance } from "@phreshos/core"
 import Preview from "../client/view/preview"
+import { components } from "../client/view/examples"
 import config from "../phresh.config"
 
 // JSDOM does not implement the native dialog's top-layer operations.
@@ -119,7 +120,7 @@ it("renders every component example", async () => {
 
     render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
 
-    for (const name of ["Input", "Textarea", "Checkbox", "Radio", "Switch", "Select", "Slider", "Surface", "Panel", "Flex", "Grid", "Tokens", "Button"]) {
+    for (const name of components) {
 
         const button = within(screen.getByRole("navigation", { name: "Components" })).getByRole("button", { name })
 
@@ -129,6 +130,33 @@ it("renders every component example", async () => {
         expect(button.getAttribute("aria-pressed")).toBe("true")
         expect(screen.getByRole("region", { name: `${name} preview` })).toBeTruthy()
     }
+})
+
+it("opens every anchored overlay without turning its positioned host into a Surface", async () => {
+
+    const user = userEvent.setup()
+
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+
+    const navigation = screen.getByRole("navigation", { name: "Components" })
+
+    await user.click(within(navigation).getByRole("button", { name: "Popover" }))
+    await user.click(screen.getByRole("button", { name: "Open popover" }))
+    const popover = screen.getByRole("dialog", { name: "Example popover" }).parentElement!
+    expect(popover.parentElement?.style.position).not.toBe("relative")
+    expect(popover.style.position).toBe("relative")
+    await user.click(screen.getByRole("button", { name: "Close" }))
+
+    await user.click(within(navigation).getByRole("button", { name: "DropdownMenu" }))
+    await user.click(screen.getByRole("button", { name: "Open menu" }))
+    const menu = screen.getByRole("menu", { name: "Open menu" })
+    expect(menu.parentElement?.parentElement?.style.position).not.toBe("relative")
+    expect(menu.parentElement?.style.position).toBe("relative")
+    await user.keyboard("[Escape]")
+
+    await user.click(within(navigation).getByRole("button", { name: "ContextMenu" }))
+    fireEvent.contextMenu(screen.getByRole("button", { name: "Right-click this target" }))
+    expect(screen.getByRole("menu", { name: "Right-click this target" })).toBeTruthy()
 })
 
 it("renders a draggable Surface over a repository-owned wallpaper stage", async () => {

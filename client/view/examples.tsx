@@ -1,11 +1,11 @@
-import { Button, Flex, Grid, Panel, Surface, useAppearance, useColor, usePreferences, useScale, useThemedValue } from "@phreshos/react-ui"
+import { AlertDialog, Button, ContextMenu, Dialog, DropdownMenu, Flex, Grid, Menu, Panel, Popover, Surface, Tooltip, useAppearance, useColor, usePreferences, useScale, useThemedValue } from "@phreshos/react-ui"
 import { motion } from "motion/react"
 import { useRef, useState } from "react"
 import darkWallpaper from "../assets/dark-wallpaper.png"
 import lightWallpaper from "../assets/light-wallpaper.png"
 import Inputs, { inputComponents } from "./inputs"
 
-export const components = ["Button", ...inputComponents, "Surface", "Panel", "Flex", "Grid", "Tokens"] as const
+export const components = ["Button", ...inputComponents, "Surface", "Panel", "Popover", "DropdownMenu", "ContextMenu", "Dialog", "AlertDialog", "Tooltip", "Flex", "Grid", "Tokens"] as const
 
 export type Component = typeof components[number]
 
@@ -16,13 +16,64 @@ export default function Examples({ component }: { readonly component: Component 
         {component === "Button" && <Buttons />}
         {inputComponents.map(name => component === name ? <Inputs key={name} component={name} /> : null)}
         {component === "Surface" && <Surfaces />}
-        {component === "Panel" && <Panel header={<h3 className="sample-padding">Panel header</h3>}>
-            <div className="sample-padding"><p>Content inside the inset Surface.</p><Button>Action</Button></div>
+        {component === "Panel" && <Panel>
+            <Panel.Header><h3 className="sample-padding">Panel header</h3></Panel.Header>
+            <Panel.Content><div className="sample-padding"><p>Content inside the inset Surface.</p><Button>Action</Button></div></Panel.Content>
         </Panel>}
+        {component === "Popover" && <Popover>
+            <Popover.Trigger>Open popover</Popover.Trigger>
+            <Popover.Content>
+                <Popover.Dialog aria-label="Example popover" style={{ padding: 12 }}>
+                    <Popover.Title>Popover</Popover.Title>
+                    <p>Anchored non-modal content.</p>
+                    <Popover.Close>Close</Popover.Close>
+                </Popover.Dialog>
+            </Popover.Content>
+        </Popover>}
+        {component === "DropdownMenu" && <DropdownMenu>
+            <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+            <DropdownMenu.Content><ExampleMenu /></DropdownMenu.Content>
+        </DropdownMenu>}
+        {component === "ContextMenu" && <ContextMenu>
+            <ContextMenu.Trigger><button className="sample-padding">Right-click this target</button></ContextMenu.Trigger>
+            <ContextMenu.Content><ExampleMenu /></ContextMenu.Content>
+        </ContextMenu>}
+        {component === "Dialog" && <Dialog>
+            <Dialog.Trigger>Open dialog</Dialog.Trigger>
+            <Dialog.Backdrop isDismissable>
+                <Dialog.Content>
+                    <Dialog.Header><Dialog.Title>Dialog</Dialog.Title><Dialog.Description>Modal content with explicit structural parts.</Dialog.Description></Dialog.Header>
+                    <Dialog.Body>Dialog body</Dialog.Body>
+                    <Dialog.Footer><Dialog.Close>Close</Dialog.Close></Dialog.Footer>
+                </Dialog.Content>
+            </Dialog.Backdrop>
+        </Dialog>}
+        {component === "AlertDialog" && <AlertDialog>
+            <AlertDialog.Trigger color="danger:base">Delete</AlertDialog.Trigger>
+            <AlertDialog.Backdrop>
+                <AlertDialog.Content>
+                    <AlertDialog.Header><AlertDialog.Title>Delete permanently?</AlertDialog.Title><AlertDialog.Description>This action requires an explicit decision.</AlertDialog.Description></AlertDialog.Header>
+                    <AlertDialog.Footer><AlertDialog.Close>Cancel</AlertDialog.Close><AlertDialog.Close color="danger:base">Delete</AlertDialog.Close></AlertDialog.Footer>
+                </AlertDialog.Content>
+            </AlertDialog.Backdrop>
+        </AlertDialog>}
+        {component === "Tooltip" && <Tooltip delay={0}>
+            <Tooltip.Trigger>Focus or hover</Tooltip.Trigger>
+            <Tooltip.Content>Contextual description</Tooltip.Content>
+        </Tooltip>}
         {component === "Flex" && <Flex gap="medium" wrap align="center"><Tiles /></Flex>}
         {component === "Grid" && <Grid columns={3} gap="medium"><Tiles /></Grid>}
         {component === "Tokens" && <Tokens />}
     </div>
+}
+
+function ExampleMenu() {
+    return <Menu aria-label="Example actions">
+        <Menu.Item onAction={() => undefined}>Open</Menu.Item>
+        <Menu.Item onAction={() => undefined}>Rename</Menu.Item>
+        <Menu.Separator />
+        <Menu.Item color="danger:base" onAction={() => undefined}>Delete</Menu.Item>
+    </Menu>
 }
 
 function Buttons() {
