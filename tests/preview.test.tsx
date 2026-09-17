@@ -36,14 +36,14 @@ it("declares a Client-only Program with no permissions", () => {
 
     expect(config.server).toBeUndefined()
 
-    expect(config.client?.permissions).toBeUndefined()
+    expect(config.permissions).toBeUndefined()
 })
 
 it("edits locally and resets to the latest Desktop appearance", async () => {
 
     const user = userEvent.setup()
 
-    const view = render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    const view = render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 
@@ -55,7 +55,7 @@ it("edits locally and resets to the latest Desktop appearance", async () => {
 
     expect(defaultAppearance.radius).toBe(10)
 
-    view.rerender(<Preview appearance={{ ...defaultAppearance, radius: 8 }} preferences={{ theme: "dark", animations: true }} />)
+    view.rerender(<Preview appearance={{ ...defaultAppearance, radius: 8 }} preferences={{ theme: "dark", animations: true, scale: 1 }} />)
 
     expect((screen.getByRole("slider", { name: "radius" }) as HTMLInputElement).value).toBe("18")
 
@@ -76,7 +76,7 @@ it("switches theme without inferring colors from its name", async () => {
             light: { ...defaultAppearance.colors.light, background: "#111111" },
             dark: { ...defaultAppearance.colors.dark, background: "#eeeeee" }
         }
-    }} preferences={{ theme: "light", animations: true }} />)
+    }} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     await user.click(screen.getByRole("button", { name: "Appearance" }))
 
@@ -91,7 +91,7 @@ it("exercises Button activation, disabled and pending states", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     const button = screen.getByRole("button", { name: "Test button" })
 
@@ -118,7 +118,7 @@ it("renders every component example", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     for (const name of components) {
 
@@ -136,7 +136,7 @@ it("opens every anchored overlay without turning its positioned host into a Surf
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     const navigation = screen.getByRole("navigation", { name: "Components" })
 
@@ -163,7 +163,7 @@ it("renders a draggable Surface over a repository-owned wallpaper stage", async 
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     await user.click(screen.getByRole("button", { name: "Surface" }))
 
@@ -186,7 +186,7 @@ it("keeps Appearance out of the browsing area until requested and retains edits 
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     expect(screen.queryByRole("dialog")).toBeNull()
     expect(screen.queryByRole("slider", { name: "radius" })).toBeNull()
@@ -210,7 +210,7 @@ it("exercises the input's controlled value and disabled state", async () => {
 
     const user = userEvent.setup()
 
-    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true }} />)
+    render(<Preview appearance={defaultAppearance} preferences={{ theme: "light", animations: true, scale: 1 }} />)
 
     await user.click(screen.getByRole("button", { name: "Input" }))
     await user.type(screen.getByRole("textbox", { name: "Try Input" }), "Example")
