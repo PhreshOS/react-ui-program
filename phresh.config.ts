@@ -12,6 +12,6 @@ export default defineConfig({
     client: {
         location: "dist/client",
         size: { width: 1100, height: 760 },
-        development: { startCommand: "vite --config vite.client.ts" }
+        devCommand: "vite --config vite.client.ts"
     }
 })
