@@ -40,7 +40,7 @@ export default function Examples({ component }: { readonly component: Component 
         </ContextMenu>}
         {component === "Dialog" && <Dialog>
             <Dialog.Trigger>Open dialog</Dialog.Trigger>
-            <Dialog.Backdrop isDismissable>
+            <Dialog.Backdrop dismissable>
                 <Dialog.Content>
                     <Dialog.Header><Dialog.Title>Dialog</Dialog.Title><Dialog.Description>Modal content with explicit structural parts.</Dialog.Description></Dialog.Header>
                     <Dialog.Body>Dialog body</Dialog.Body>
@@ -69,10 +69,10 @@ export default function Examples({ component }: { readonly component: Component 
 
 function ExampleMenu() {
     return <Menu aria-label="Example actions">
-        <Menu.Item onAction={() => undefined}>Open</Menu.Item>
-        <Menu.Item onAction={() => undefined}>Rename</Menu.Item>
+        <Menu.Item id="open" onAction={() => undefined}>Open</Menu.Item>
+        <Menu.Item id="rename" onAction={() => undefined}>Rename</Menu.Item>
         <Menu.Separator />
-        <Menu.Item color="danger:base" onAction={() => undefined}>Delete</Menu.Item>
+        <Menu.Item id="delete" color="danger:base" onAction={() => undefined}>Delete</Menu.Item>
     </Menu>
 }
 

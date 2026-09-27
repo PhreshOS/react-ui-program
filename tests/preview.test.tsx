@@ -143,15 +143,15 @@ it("opens every anchored overlay without turning its positioned host into a Surf
     await user.click(within(navigation).getByRole("button", { name: "Popover" }))
     await user.click(screen.getByRole("button", { name: "Open popover" }))
     const popover = screen.getByRole("dialog", { name: "Example popover" }).parentElement!
-    expect(popover.parentElement?.style.position).not.toBe("relative")
-    expect(popover.style.position).toBe("relative")
+    expect(popover.classList.contains("phreshos-surface")).toBe(true)
+    expect(popover.parentElement?.classList.contains("phreshos-surface")).toBe(false)
     await user.click(screen.getByRole("button", { name: "Close" }))
 
     await user.click(within(navigation).getByRole("button", { name: "DropdownMenu" }))
     await user.click(screen.getByRole("button", { name: "Open menu" }))
     const menu = screen.getByRole("menu", { name: "Open menu" })
-    expect(menu.parentElement?.parentElement?.style.position).not.toBe("relative")
-    expect(menu.parentElement?.style.position).toBe("relative")
+    expect(menu.parentElement?.classList.contains("phreshos-surface")).toBe(true)
+    expect(menu.parentElement?.parentElement?.classList.contains("phreshos-surface")).toBe(false)
     await user.keyboard("[Escape]")
 
     await user.click(within(navigation).getByRole("button", { name: "ContextMenu" }))
@@ -168,16 +168,9 @@ it("renders a draggable Surface over a repository-owned wallpaper stage", async 
     await user.click(screen.getByRole("button", { name: "Surface" }))
 
     const surface = screen.getByRole("group", { name: "Draggable Surface" })
-    const resolvedForeground = document.createElement("div")
-    resolvedForeground.style.color = defaultAppearance.colors.light.foreground
-
-    expect(surface.className).toBe("")
-    expect(surface.style.background).toBe("transparent")
-    expect(surface.style.position).toBe("relative")
-    expect(surface.style.isolation).toBe("isolate")
-    expect(surface.style.borderRadius).toBe("10px")
-    expect(surface.style.color).toBe(resolvedForeground.style.color)
-    expect(surface.querySelector("[data-material]")).toBeTruthy()
+    expect(surface.classList.contains("phreshos-surface")).toBe(true)
+    expect(surface.style.width).toBe("100px")
+    expect(surface.style.height).toBe("100px")
     expect(surface.parentElement?.style.backgroundImage).not.toBe("")
     expect(surface.closest(".workspace")?.getAttribute("style")).not.toContain("background")
 })

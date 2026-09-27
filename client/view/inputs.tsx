@@ -1,7 +1,7 @@
 import { useState } from "react"
 import {
     Checkbox, Flex, Grid, Input, RadioGroup, Select, Slider, Switch, Textarea,
-    type ControlColor, type ScaleLevel
+    type Color, type ScaleLevel
 } from "@phreshos/react-ui"
 
 export const inputComponents = ["Input", "Textarea", "Checkbox", "RadioGroup", "Switch", "Select", "Slider"] as const
@@ -44,7 +44,7 @@ function Example({ component, label, size, color, disabled, readOnly, invalid, m
     component: InputComponent
     label: string
     size?: ScaleLevel
-    color?: ControlColor
+    color?: Color
     disabled?: boolean
     readOnly?: boolean
     invalid?: boolean
@@ -70,9 +70,11 @@ function Example({ component, label, size, color, disabled, readOnly, invalid, m
         {component === "RadioGroup" && <RadioGroup {...field} readOnly={readOnly} value={choice} onChange={setChoice} orientation="horizontal">
             <RadioGroup.Item label="One" value="one" /><RadioGroup.Item label="Two" value="two" /><RadioGroup.Item label="Unavailable" value="unavailable" disabled />
         </RadioGroup>}
-        {component === "Select" && <Select {...field} value={choice} onChange={setChoice} options={[
-            { value: "one", label: "One" }, { value: "two", label: "Two" }, { value: "unavailable", label: "Unavailable", disabled: true }
-        ]} />}
+        {component === "Select" && <Select {...field} value={choice} onChange={setChoice}>
+            <Select.Item id="one">One</Select.Item>
+            <Select.Item id="two">Two</Select.Item>
+            <Select.Item id="unavailable" disabled>Unavailable</Select.Item>
+        </Select>}
         {component === "Slider" && <Slider {...properties} value={number} onChange={setNumber} minValue={0} maxValue={100} step={5} />}
         {showValue && <p role="status" aria-label="Input value">Value: {JSON.stringify(value)}</p>}
     </>
