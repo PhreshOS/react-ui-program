@@ -1,4 +1,4 @@
-import { UIProvider, Button, Flex, Surface, useAppearance, useThemedValue } from "@phreshos/react-ui"
+import { DocumentTheme, UIProvider, Button, Flex, Surface, useAppearance, useThemedValue } from "@phreshos/react-ui"
 import type { Appearance, DesktopPreferences as Preferences, Theme } from "@phreshos/core"
 import { useEffect, useRef, useState } from "react"
 import metadata from "../../package.json"
@@ -21,6 +21,7 @@ export default function Preview({ appearance, preferences }: { readonly appearan
     useEffect(() => { document.title = metadata.displayName }, [])
 
     return <UIProvider appearance={draft ?? appearance} preferences={effectivePreferences}>
+        <DocumentTheme />
         <Workspace>
             <Surface className="component-sidebar">
                 <h1>{metadata.displayName}</h1>
