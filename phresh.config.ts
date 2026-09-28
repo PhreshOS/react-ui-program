@@ -11,7 +11,6 @@ export default defineConfig({
     buildCommand: "npm run build",
     client: {
         location: "dist/client",
-        size: { width: 1100, height: 760 },
         devCommand: "vite --config vite.client.ts"
     }
 })
