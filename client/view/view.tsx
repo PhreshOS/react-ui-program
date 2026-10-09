@@ -1,4 +1,4 @@
-import { DesktopProvider, SystemProvider, useDesktopPreferences, useSystemAppearance } from "@phreshos/react"
+import { DesktopProvider, SystemProvider, useResolvedDesktopPreferences, useSystemAppearance } from "@phreshos/react"
 import { desktop, system } from "@phreshos/client"
 import Preview from "./preview"
 import "./style.css"
@@ -16,7 +16,7 @@ function ConnectedPreview() {
 
     const appearance = useSystemAppearance()
 
-    const preferences = useDesktopPreferences()
+    const preferences = useResolvedDesktopPreferences()
 
     return <Preview appearance={appearance} preferences={preferences} />
 }
